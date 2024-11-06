@@ -2,8 +2,10 @@
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import geojsondata from '@/data/GeoJSON';
+import type { GeoJsonObject } from 'geojson';
 import React from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { GeoJSON, MapContainer, TileLayer } from 'react-leaflet';
 
 const KantoMap = () => {
   const boundX = -199.984375;
@@ -13,7 +15,7 @@ const KantoMap = () => {
   const bounds = L.latLngBounds(L.latLng(boundX, 0), L.latLng(0, boundY));
   const maxBounds = L.latLngBounds(
     L.latLng(boundX - outOfBoundsInt, 0 - outOfBoundsInt),
-    L.latLng(0 + outOfBoundsInt, boundY + outOfBoundsInt)
+    L.latLng(0 + outOfBoundsInt, boundY + outOfBoundsInt),
   );
 
   return (
@@ -34,6 +36,15 @@ const KantoMap = () => {
           tileSize={256}
           tms={false}
           url="/tiles/{z}/{x}/{y}.png"
+        />
+        <GeoJSON
+          data={geojsondata.features[0] as GeoJsonObject}
+          style={() => ({
+            color: '#0d6efd',
+            fillColor: '#0d6efd',
+            weight: 5,
+            fillOpacity: 0.5,
+          })}
         />
       </MapContainer>
     </div>
