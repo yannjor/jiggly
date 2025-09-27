@@ -7,6 +7,7 @@ import React, { useMemo, useState } from 'react';
 import geojsondata from '@/data/GeoJSON';
 import AudioPlayer from './AudioPlayer';
 import ScoreCounter, { type Score } from './ScoreCounter';
+import './jigglypuff-animations.css';
 import WelcomeScreen from './WelcomeScreen';
 
 const Game = () => {
@@ -28,6 +29,7 @@ const Game = () => {
   const [score, setScore] = useState<Score>({ correct: 0, total: 0 });
   const [round, setRound] = useState(1);
   const [gameComplete, setGameComplete] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   const TOTAL_ROUNDS = 5;
 
   const KantoMap = useMemo(
@@ -53,6 +55,12 @@ const Game = () => {
         correct: prev.correct + (isCorrect ? 1 : 0),
         total: prev.total + 1,
       }));
+
+      // Trigger celebration animation if correct
+      if (isCorrect) {
+        setShowCelebration(true);
+        setTimeout(() => setShowCelebration(false), 2000); // Stop after 2 seconds
+      }
     }
   };
 
@@ -63,6 +71,7 @@ const Game = () => {
       setShowResult(false);
       setCanConfirm(false);
       setIsCorrect(null);
+      setShowCelebration(false);
     } else {
       setGameComplete(true);
     }
@@ -78,6 +87,7 @@ const Game = () => {
     setCanConfirm(false);
     setIsCorrect(null);
     setGameComplete(false);
+    setShowCelebration(false);
   };
 
   if (!gameStarted) {
@@ -87,13 +97,25 @@ const Game = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex justify-between items-center p-4">
-        <div className="flex gap-4 items-center">
-          <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/jigglypuff.png`}
-            width={40}
-            height={40}
-            alt="jigglypuff"
-          />
+        <div className="flex gap-4 items-center relative">
+          <div className="relative">
+            <Image
+              src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/jigglypuff.png`}
+              width={40}
+              height={40}
+              alt="jigglypuff"
+              className={showCelebration ? 'celebration-animation' : ''}
+            />
+            {showCelebration && (
+              <>
+                <div className="confetti-particle"></div>
+                <div className="confetti-particle"></div>
+                <div className="confetti-particle"></div>
+                <div className="confetti-particle"></div>
+                <div className="confetti-particle"></div>
+              </>
+            )}
+          </div>
           <h1 className="text-xl font-bold">Jiggly</h1>
         </div>
         <ScoreCounter score={score} round={round} totalRounds={TOTAL_ROUNDS} />
