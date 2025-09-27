@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import './globals.css';
 
+const fireRedFont = localFont({
+  src: './fonts/firered-leafgreen-font.ttf',
+  weight: '400',
+});
+
 export const metadata: Metadata = {
-  title: 'Chatot',
+  title: 'Jiggly',
 };
 
 export default function RootLayout({
@@ -11,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={fireRedFont.className}>
       <body>{children}</body>
     </html>
   );
