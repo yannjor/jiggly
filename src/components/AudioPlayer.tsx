@@ -10,7 +10,7 @@ const AudioPlayer = ({ src }: Props) => {
   const audioRef = useRef(null);
 
   return (
-    <div className="flex justify-center mt-4">
+    <div className="flex justify-center mt-3">
       {/* biome-ignore lint/a11y/useMediaCaption: not really possible to have captions */}
       <audio autoPlay controls ref={audioRef} src={src} />
     </div>

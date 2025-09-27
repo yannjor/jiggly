@@ -96,29 +96,68 @@ const Game = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="flex justify-between items-center p-4">
-        <div className="flex gap-4 items-center relative">
-          <div className="relative">
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/jigglypuff.png`}
-              width={40}
-              height={40}
-              alt="jigglypuff"
-              className={showCelebration ? 'celebration-animation' : ''}
-            />
-            {showCelebration && (
-              <>
-                <div className="confetti-particle"></div>
-                <div className="confetti-particle"></div>
-                <div className="confetti-particle"></div>
-                <div className="confetti-particle"></div>
-                <div className="confetti-particle"></div>
-              </>
-            )}
+      <div className="container mx-auto px-4 max-w-5xl">
+        <div className="flex justify-between items-center px-4">
+          <div className="hidden sm:flex gap-4 items-center relative">
+            <div className="relative">
+              <Image
+                src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/jigglypuff.png`}
+                width={40}
+                height={40}
+                alt="jigglypuff"
+                className={showCelebration ? 'celebration-animation' : ''}
+              />
+              {showCelebration && (
+                <>
+                  <div className="confetti-particle"></div>
+                  <div className="confetti-particle"></div>
+                  <div className="confetti-particle"></div>
+                  <div className="confetti-particle"></div>
+                  <div className="confetti-particle"></div>
+                </>
+              )}
+            </div>
+            <h1 className="text-xl font-bold">Jiggly</h1>
           </div>
-          <h1 className="text-xl font-bold">Jiggly</h1>
+
+          <div className="flex sm:hidden justify-between items-center w-full">
+            <h1 className="text-xl font-bold">Jiggly</h1>
+            <ScoreCounter
+              score={score}
+              round={round}
+              totalRounds={TOTAL_ROUNDS}
+            />
+          </div>
+
+          <div className="hidden sm:block">
+            <ScoreCounter
+              score={score}
+              round={round}
+              totalRounds={TOTAL_ROUNDS}
+            />
+          </div>
         </div>
-        <ScoreCounter score={score} round={round} totalRounds={TOTAL_ROUNDS} />
+      </div>
+
+      <div className="flex sm:hidden justify-center pb-2">
+        <div className="relative">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/jigglypuff.png`}
+            width={40}
+            height={40}
+            alt="jigglypuff"
+            className={showCelebration ? 'celebration-animation' : ''}
+          />
+          {showCelebration && (
+            <>
+              <div className="confetti-particle"></div>
+              <div className="confetti-particle"></div>
+              <div className="confetti-particle"></div>
+              <div className="confetti-particle"></div>
+              <div className="confetti-particle"></div>
+            </>
+          )}
+        </div>
       </div>
 
       {gameComplete ? (
@@ -139,11 +178,9 @@ const Game = () => {
         </div>
       ) : (
         <>
-          <div className="p-4">
-            <AudioPlayer
-              src={`https://ia601409.us.archive.org/5/items/pkmn-frlg-soundtrack/Disc%201/${currentTrack}`}
-            />
-          </div>
+          <AudioPlayer
+            src={`https://ia601409.us.archive.org/5/items/pkmn-frlg-soundtrack/Disc%201/${currentTrack}`}
+          />
 
           {showResult && (
             <div className="text-center py-3">
