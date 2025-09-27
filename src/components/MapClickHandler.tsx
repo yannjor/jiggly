@@ -61,8 +61,10 @@ const MapClickHandler = ({
   useEffect(() => {
     if (showResult) {
       setUserGuessed(true);
-      const center = L.geoJSON(currentPolygon).getBounds().getCenter();
-      map.panTo(center, { duration: 0.5, animate: true });
+      if (currentPolygon.type === 'Polygon') {
+        const center = L.geoJSON(currentPolygon).getBounds().getCenter();
+        map.panTo(center, { duration: 0.5, animate: true });
+      }
     } else {
       setUserGuessed(false);
       setMarkerPosition(null);
@@ -86,10 +88,10 @@ const MapClickHandler = ({
         <GeoJSON
           data={currentPolygon}
           style={() => ({
-            color: '#800080', // Outline color
-            fillColor: '#800080', // Fill color
-            weight: 5, // Outline thickness
-            fillOpacity: 0.5, // Opacity of fill
+            color: '#800080',
+            fillColor: '#800080',
+            weight: 5,
+            fillOpacity: 0.5,
           })}
         />
       )}
