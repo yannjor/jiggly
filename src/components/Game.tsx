@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import geojsondata from '@/data/GeoJSON';
-import KantoMap from './KantoMap';
 import type { Feature } from 'geojson';
 import AudioPlayer from './AudioPlayer';
 import ScoreCounter, { Score } from './ScoreCounter';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 
 const getChallenge = (features: Feature[]): Feature[] => {
   return Array.from(
@@ -29,6 +29,15 @@ const Game = () => {
   const [round, setRound] = useState(1);
   const [gameComplete, setGameComplete] = useState(false);
   const TOTAL_ROUNDS = 5;
+
+  const KantoMap = useMemo(
+    () =>
+      dynamic(() => import('./KantoMap'), {
+        loading: () => <p className="text-center">Map is loading...</p>,
+        ssr: false,
+      }),
+    [],
+  );
 
   const handleConfirmGuess = () => {
     if (canConfirm) {
@@ -108,7 +117,7 @@ const Game = () => {
               <p
                 className={`font-semibold text-lg ${isCorrect ? 'text-green-600' : 'text-red-600'}`}
               >
-                {isCorrect ? '✓ Correct!' : '✗ Wrong!'} It was{' '}
+                {isCorrect ? 'Correct!' : 'Wrong!'} It was{' '}
                 {currentTrackName}
               </p>
             </div>
