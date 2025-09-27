@@ -18,6 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={fireRedFont.className}>
+      <head>
+        <link href="/jigglypuff.ico" rel="icon" sizes="any" />
+      </head>
       <body>{children}</body>
     </html>
   );

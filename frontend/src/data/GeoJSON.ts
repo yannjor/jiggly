@@ -364,6 +364,25 @@ const geojsondata = {
     {
       type: 'Feature',
       properties: {
+        name: 'Safari Zone Theme',
+        title: '33 - Evolution.mp3',
+        locations: ['Safari Zone'],
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [98.5, -136.7],
+            [117.8, -136.7],
+            [117.8, -149.9],
+            [98.5, -149.9],
+          ],
+        ],
+      },
+    },
+    {
+      type: 'Feature',
+      properties: {
         name: 'Vermilion City Theme',
         title: '35 - Vermilion City.mp3',
         locations: ['Vermilion City'],
