@@ -1,11 +1,11 @@
 'use client';
 
-import geojsondata from '@/data/GeoJSON';
-import type { GeoJsonObject, Feature } from 'geojson';
+import type { Feature, GeoJsonObject, MultiPolygon } from 'geojson';
 import L, { Icon, type LeafletMouseEvent } from 'leaflet';
 import defaultIconPng from 'leaflet/dist/images/marker-icon.png';
 import React, { useEffect, useState } from 'react';
 import { GeoJSON, Marker, useMapEvents } from 'react-leaflet';
+import geojsondata from '@/data/GeoJSON';
 
 interface Props {
   currentFeature: Feature;
@@ -61,15 +61,22 @@ const MapClickHandler = ({
   useEffect(() => {
     if (showResult) {
       setUserGuessed(true);
+      let center: L.LatLng;
       if (currentPolygon.type === 'Polygon') {
-        const center = L.geoJSON(currentPolygon).getBounds().getCenter();
-        map.panTo(center, { duration: 0.5, animate: true });
+        center = L.geoJSON(currentPolygon).getBounds().getCenter();
+      } else {
+        const tempPolygon = {
+          type: 'Polygon' as const,
+          coordinates: (currentPolygon as MultiPolygon).coordinates[0],
+        };
+        center = L.geoJSON(tempPolygon).getBounds().getCenter();
       }
+      map.panTo(center, { duration: 0.5, animate: true });
     } else {
       setUserGuessed(false);
       setMarkerPosition(null);
     }
-  }, [showResult]);
+  }, [showResult, currentPolygon, map.panTo]);
 
   const defaultIcon = new Icon({
     iconUrl: defaultIconPng.src,

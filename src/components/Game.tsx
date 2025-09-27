@@ -1,12 +1,13 @@
 'use client';
 
+import type { Feature } from 'geojson';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import React, { useMemo, useState } from 'react';
 import geojsondata from '@/data/GeoJSON';
-import type { Feature } from 'geojson';
 import AudioPlayer from './AudioPlayer';
-import ScoreCounter, { Score } from './ScoreCounter';
-import Image from 'next/image';
-import dynamic from 'next/dynamic';
+import ScoreCounter, { type Score } from './ScoreCounter';
+import WelcomeScreen from './WelcomeScreen';
 
 const Game = () => {
   const getChallenge = (features: Feature[]): Feature[] => {
@@ -16,12 +17,11 @@ const Game = () => {
     );
   };
 
-  const [currentChallenge, setCurrentChallenge] = useState(
-    getChallenge([...(geojsondata.features as Feature[])]),
-  );
-  const [randomFeature, setRandomFeature] = useState(currentChallenge[0]);
-  const currentTrack = randomFeature.properties?.title;
-  const currentTrackName = randomFeature.properties?.name;
+  const [gameStarted, setGameStarted] = useState(false);
+  const [currentChallenge, setCurrentChallenge] = useState<Feature[]>([]);
+  const [randomFeature, setRandomFeature] = useState<Feature | null>(null);
+  const currentTrack = randomFeature?.properties?.title;
+  const currentTrackName = randomFeature?.properties?.name;
   const [showResult, setShowResult] = useState(false);
   const [canConfirm, setCanConfirm] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -38,6 +38,13 @@ const Game = () => {
       }),
     [],
   );
+
+  const handleStartGame = () => {
+    const newChallenge = getChallenge([...(geojsondata.features as Feature[])]);
+    setCurrentChallenge(newChallenge);
+    setRandomFeature(newChallenge[0]);
+    setGameStarted(true);
+  };
 
   const handleConfirmGuess = () => {
     if (canConfirm) {
@@ -72,6 +79,10 @@ const Game = () => {
     setIsCorrect(null);
     setGameComplete(false);
   };
+
+  if (!gameStarted) {
+    return <WelcomeScreen handleStartGame={handleStartGame} />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -160,12 +171,14 @@ const Game = () => {
           </div>
 
           <div className="flex-1">
-            <KantoMap
-              currentFeature={randomFeature}
-              showResult={showResult}
-              setCanConfirm={setCanConfirm}
-              setIsCorrect={setIsCorrect}
-            />
+            {randomFeature && (
+              <KantoMap
+                currentFeature={randomFeature}
+                showResult={showResult}
+                setCanConfirm={setCanConfirm}
+                setIsCorrect={setIsCorrect}
+              />
+            )}
           </div>
         </>
       )}
