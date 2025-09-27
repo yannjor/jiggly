@@ -8,18 +8,18 @@ import ScoreCounter, { Score } from './ScoreCounter';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
-const getChallenge = (features: Feature[]): Feature[] => {
-  return Array.from(
-    { length: 5 },
-    () => features.splice(Math.floor(Math.random() * features.length), 1)[0],
-  );
-};
-
-const challenge = getChallenge([...(geojsondata.features as Feature[])]);
-
 const Game = () => {
-  const [currentChallenge, setCurrentChallenge] = useState(challenge);
-  const [randomFeature, setRandomFeature] = useState(challenge[0]);
+  const getChallenge = (features: Feature[]): Feature[] => {
+    return Array.from(
+      { length: 5 },
+      () => features.splice(Math.floor(Math.random() * features.length), 1)[0],
+    );
+  };
+
+  const [currentChallenge, setCurrentChallenge] = useState(
+    getChallenge([...(geojsondata.features as Feature[])]),
+  );
+  const [randomFeature, setRandomFeature] = useState(currentChallenge[0]);
   const currentTrack = randomFeature.properties?.title;
   const currentTrackName = randomFeature.properties?.name;
   const [showResult, setShowResult] = useState(false);
