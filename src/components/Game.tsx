@@ -78,7 +78,7 @@ const Game = () => {
       <div className="flex justify-between items-center p-4">
         <div className="flex gap-4 items-center">
           <Image
-            src="/jigglypuff.png"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/jigglypuff.png`}
             width={40}
             height={40}
             alt="jigglypuff"
@@ -117,8 +117,7 @@ const Game = () => {
               <p
                 className={`font-semibold text-lg ${isCorrect ? 'text-green-600' : 'text-red-600'}`}
               >
-                {isCorrect ? 'Correct!' : 'Wrong!'} It was{' '}
-                {currentTrackName}
+                {isCorrect ? 'Correct!' : 'Wrong!'} It was {currentTrackName}
               </p>
             </div>
           )}

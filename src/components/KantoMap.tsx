@@ -27,7 +27,7 @@ const KantoMap = ({
   const bounds = L.latLngBounds(L.latLng(boundX, 0), L.latLng(0, boundY));
   const maxBounds = L.latLngBounds(
     L.latLng(boundX - outOfBoundsInt, 0 - outOfBoundsInt),
-    L.latLng(0 + outOfBoundsInt, boundY + outOfBoundsInt)
+    L.latLng(0 + outOfBoundsInt, boundY + outOfBoundsInt),
   );
 
   return (
@@ -53,7 +53,7 @@ const KantoMap = ({
           bounds={bounds}
           tileSize={256}
           tms={false}
-          url="/tiles/{z}/{x}/{y}.png"
+          url={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/tiles/{z}/{x}/{y}.png`}
         />
       </MapContainer>
     </div>

@@ -19,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={fireRedFont.className}>
       <head>
-        <link href="/jigglypuff.ico" rel="icon" sizes="any" />
+        <link
+          href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/jigglypuff.ico`}
+          rel="icon"
+          sizes="any"
+        />
       </head>
       <body>{children}</body>
     </html>
